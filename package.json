@@ -4,6 +4,8 @@
   "description": "WebRTC Example ==============",
   "main": "sever.js",
   "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
     "ws": "^3.0.0"
   },
   "devDependencies": {},

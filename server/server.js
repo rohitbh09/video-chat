@@ -1,8 +1,9 @@
 const HTTPS_PORT = 8443;
 
-const fs = require('fs');
-const https = require('https');
-const WebSocket = require('ws');
+const fs              = require('fs');
+const https           = require('https');
+const WebSocket       = require('ws');
+const app             = require('../lib/http-server');
 const WebSocketServer = WebSocket.Server;
 
 // Yes, SSL is required
@@ -27,8 +28,10 @@ var handleRequest = function(request, response) {
     }
 };
 
-var httpsServer = https.createServer(serverConfig, handleRequest);
-httpsServer.listen(HTTPS_PORT, '0.0.0.0');
+var httpsServer = https.createServer(serverConfig);
+// httpsServer.listen(HTTPS_PORT, '0.0.0.0');
+
+httpsServer.on('request', app);
 
 // ----------------------------------------------------------------------------------------
 
@@ -51,4 +54,8 @@ wss.broadcast = function(data) {
     });
 };
 
+httpsServer.listen( HTTPS_PORT, function() {
+
+  console.log(`http/ws server listening on HTTPS_PORT`);
+});
 console.log('Server running. Visit https://localhost:' + HTTPS_PORT + ' in Firefox/Chrome (note the HTTPS; there is no HTTP -> HTTPS redirect!)');
